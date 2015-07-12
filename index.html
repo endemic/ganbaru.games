@@ -1,27 +1,52 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Ganbaru Games | Independent Game Development in Columbus, Ohio</title>
-	<style type="text/css">
-		body { margin: 0; padding: 0; background: #a9bbc7; }
-		header { background: url('assets/images/logo.png') #000 5% center no-repeat; height: 70px; }
-		header h1 { position: absolute; left: -9999px; }
+    <title>Ganbaru Games</title>
 
-		.box { font: 1.5rem/1 sans-serif; display: inline-block; width: 60%; margin: 2.5%; box-sizing: border-box; padding: 1%; background: #fff; box-shadow: 0 0 2px rgba(0, 0, 0, 0.5) }
-		.box a { color: #a9bbc7; }
-		.box p { margin: 0.25rem; }
-	</style>
+    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
+
+    <script>
+        function loadIframe(url) {
+            var iframe,
+                screen;
+
+            iframe = document.createElement('iframe');
+            screen = document.getElementById('screen');
+            iframe.src = url;
+            iframe.onload = function () {
+                this.style = 'transform: translateY(-100%);';
+            };
+            screen.appendChild(iframe);
+        }
+
+        window.onload = function () {
+            document.getElementById('home').addEventListener('click', function (event) {
+                var iframe = document.getElementsByTagName('iframe')[0];
+                iframe.style = 'transform: translateY(0%);';
+                window.setTimeout(function () {
+                    iframe.parentNode.removeChild(iframe);
+                }, 500);
+            }, false);
+
+            document.getElementById('bridges').addEventListener('click', function (event) {
+                loadIframe('http://ganbarugames.com/bridges/');
+            });
+        };
+    </script>
 </head>
 <body>
-	<header>
-		<h1>Ganbaru Games</h1>
-	</header>
-
-	<section class="box">
-		<p>This site is changing focus from being a development blog to simply
-			hosting my web-based games. There are two that are currently available: 
-			<a href="/nonogram-madness" title="Nonogram Madness">Nonogram Madness</a>
-			and <a href="/shikaku-madness" title="Shikaku Madness">Shikaku Madness</a>.
-			Enjoy!</p>
-	</section>
+    <div class="mobile">
+        <div class="screen" id="screen">
+            <div class="row">
+                <div class="column" id="bridges">
+                    <img src="http://ganbarugames.com/bridges/assets/icons/114.png" alt="Let's Build Bridges"><br>
+                    Let's Build<br>
+                    Bridges
+                </div>
+            </div>
+            <div class="space"></div>
+        </div>
+        <button class="home" id="home"></button>
+    </div
 </body>
 </html>
