@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ganbaru Games</title>
+    <title>Ganbaru Games | Independent Game Development in Columbus, Ohio</title>
 
     <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
 
@@ -14,7 +14,8 @@
             screen = document.getElementById('screen');
             iframe.src = url;
             iframe.onload = function () {
-                this.style = 'transform: translateY(-100%);';
+                this.style['transform'] = 'translateY(-100%)';
+                this.style['-webkit-transform'] = 'translateY(-100%)';
             };
             screen.appendChild(iframe);
         }
@@ -22,14 +23,15 @@
         window.onload = function () {
             document.getElementById('home').addEventListener('click', function (event) {
                 var iframe = document.getElementsByTagName('iframe')[0];
-                iframe.style = 'transform: translateY(0%);';
+                iframe.style['transform'] = 'translateY(0%)';
+                iframe.style['-webkit-transform'] = 'translateY(0%)';
                 window.setTimeout(function () {
                     iframe.parentNode.removeChild(iframe);
                 }, 500);
             }, false);
 
             document.getElementById('bridges').addEventListener('click', function (event) {
-                loadIframe('http://ganbarugames.com/bridges/');
+                loadIframe('http://ganbarugames.com/bridges');
             });
         };
     </script>
