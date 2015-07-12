@@ -1,5 +1,5 @@
 body { background: #666; text-align: center; }
-.mobile { margin: 5% auto; border-radius: 10px; width: 340px; height: 640px; background: #333; overflow: auto; }
+.mobile { margin: 20px auto; border-radius: 10px; width: 340px; height: 640px; background: #333; overflow: auto; }
 .screen { width: 320px; height: 568px; background: #000; margin: 10px; color: #fff; position: relative; overflow: hidden; }
 .home { width: 40px; height: 40px; background: #333; border: 2px solid #fff; border-radius: 20px; cursor: pointer; }
 .row { height: 106.66px; }
