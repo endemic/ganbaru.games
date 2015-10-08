@@ -4,6 +4,6 @@ body { background: #666; text-align: center; }
 .home { width: 40px; height: 40px; background: #333; border: 2px solid #fff; border-radius: 20px; cursor: pointer; }
 .row { height: 106.66px; }
 .space { height: 461.34px; }
-.column { width: 106.66px; height: 106.66px; font: 11px sans-serif; cursor: pointer; }
+.column { float: left; width: 106.66px; height: 106.66px; font: 11px sans-serif; cursor: pointer; }
 .column img { width: 70px; height: 70px; margin: 15px 0px 5px; }
 iframe { -webkit-transition: -webkit-transform 0.5s; transition: transform 0.5s; width: 320px; height: 568px; border: 0; }
