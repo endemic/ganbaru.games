@@ -1,83 +1,57 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Ganbaru Games | Independent Game Development in Columbus, Ohio</title>
+    <head>
+        <meta charset="utf-8">
+        <title>Play puzzle games on your mobile or desktop | Ganbaru Games</title>
+    </head>
+    <body>
+        <h1>Ganbaru Games</h1>
 
-    <link rel="stylesheet" type="text/css" href="assets/stylesheets/main.css">
+        <h2>Online puzzle games, playable in your browser!</h2>
 
-    <script>
-        function loadIframe(url) {
-            var iframe,
-                screen;
+        <section>
+            <h3>Let's Build Bridges</h3>
 
-            iframe = document.createElement('iframe');
-            screen = document.getElementById('screen');
-            iframe.src = url;
-            iframe.onload = function () {
-                this.style['transform'] = 'translateY(-100%)';
-                this.style['-webkit-transform'] = 'translateY(-100%)';
-            };
-            screen.appendChild(iframe);
-        }
+            Let's Build Bridges is a collection of logic puzzles, also known as
+            Hashi, Bridges, or Chopsticks. The goal of each puzzle is to connect all the "islands" by drawing a series of "bridges" between them. The rules are:
 
-        window.onload = function () {
-            document.getElementById('home').addEventListener('click', function (event) {
-                var iframe = document.getElementsByTagName('iframe')[0];
-                iframe.style['transform'] = 'translateY(0%)';
-                iframe.style['-webkit-transform'] = 'translateY(0%)';
-                window.setTimeout(function () {
-                    iframe.parentNode.removeChild(iframe);
-                }, 500);
-            }, false);
+            * Bridges must start and end at an island
+            * Bridges can only be drawn in straight lines (no diagonal)
+            * Bridges cannot cross each other
+            * At most, two bridges can be drawn between islands
+            * The number of bridges connected to each island must match the number on the island
+            * The bridges must connect _all_ the islands in a single, contiguous group
 
-            document.getElementById('bridges').addEventListener('click', function (event) {
-                loadIframe('/bridges');
-            });
+            The first few puzzles are easy, but watch out, as the difficulty ramps up quickly! There are 100 puzzles to solve. Have fun building bridges!
+        </section>
 
-            document.getElementById('shikaku').addEventListener('click', function (event) {
-                loadIframe('/shikaku');
-            });
+        <section>
+            <h3>Shikaku Madness</h3>
 
-            document.getElementById('nonogram').addEventListener('click', function (event) {
-                loadIframe('/nonogram');
-            });
-        };
-    </script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            Are you a puzzle maniac? Do you eat Japanese logic games like sudoku and nonograms for breakfast? Give Shikaku Madness a try. It's a fun and challenging game, with 120 unique puzzles to solve. Bust your brain as you try to figure out how to completely cover the game grid using squares and rectangles. Sound complicated? Don't worry! There's an interactive tutorial for new players to help learn the rules.
 
-      ga('create', 'UA-3882160-3', 'auto');
-      ga('send', 'pageview');
-    </script>
-</head>
-<body>
-    <div class="mobile">
-        <div class="screen" id="screen">
-            <div class="row">
-                <div class="column" id="bridges">
-                    <img src="bridges/assets/icons/120.png" alt="Let's Build Bridges"><br>
-                    Let's Build<br>
-                    Bridges
-                </div>
+            How To Play
+            ---------------
+            Tap + drag on the puzzle grid to draw. Each number on the grid is a clue; the number represents the size of the rectangle that overlaps it. For example, a clue of "9" means that you need to draw a 3x3 square on top of that clue. The trick is to draw each square and rectangle so that there's no wasted space on the grid. You can't overlap squares, either. Fortunately, there's no time limit, and you can always try again if you make a mistake.
+        </section>
 
-                <div class="column" id="shikaku">
-                    <img src="shikaku/assets/icons/120.png" alt="Shikaku Madness"><br>
-                    Shikaku<br>
-                    Madness
-                </div>
+        <section>
+            <h3>Nonogram Madness</h3>
 
-                <div class="column" id="nonogram">
-                    <img src="nonogram/assets/icons/120.png" alt="Nonogram Madness"><br>
-                    Nonogram<br>
-                    Madness
-                </div>
-            </div>
-            <div class="space"></div>
-        </div>
-        <button class="home" id="home"></button>
-    </div
-</body>
+            <p>
+                A fun &amp; challenging puzzle game; best described as a mix
+                between sudoku and crosswords. Use the provided clues to fill in
+                the correct blocks in the grid, revealing a hidden picture.
+                Complete the included "easy" difficulty puzzles, and if you're
+                up to the challenge, unlock the "medium" and "hard" difficulties
+                for hours of puzzling fun. Includes an interactive tutorial to
+                get beginners up to speed. Think you're a nonogram master? Try
+                solving the randomly generated puzzles for infinite replay value!
+
+                How To Play
+                ---------------
+                The goal of a nonogram puzzle is to "fill" all the correct blocks in a grid. The key to solving each puzzle is the numbers on the top and left of the grid. Each number gives you a clue about how many blocks are filled in each row or column. For example, if the clue for a row was "4 3 1", that means there are four sequentially filled blocks, a gap of one (or more), three filled blocks, another gap, and then finally one filled block on its own. In a 10x10 puzzle grid, this clue solves the whole row: 4 filled + 1 blank + 3 filled + 1 blank + 1 filled = 10 total. Solve easy clues first, then you can logically fill in the rest of the blocks in the grid. Make sure to play the tutorial for more practice!
+            </p>
+        </section>
+    </body>
 </html>

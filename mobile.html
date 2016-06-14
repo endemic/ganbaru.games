@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ganbaru Games | Independent Game Development in Columbus, Ohio</title>
+    <style type="text/css">
+      body { background: #666; text-align: center; }
+      .mobile { margin: 20px auto; border-radius: 10px; width: 340px; height: 640px; background: #333; overflow: auto; }
+      .screen { width: 320px; height: 568px; background: #000; margin: 10px; color: #fff; position: relative; overflow: hidden; }
+      .home { width: 40px; height: 40px; background: #333; border: 2px solid #fff; border-radius: 20px; cursor: pointer; }
+      .row { height: 106.66px; }
+      .space { height: 461.34px; }
+      .column { float: left; width: 106.66px; height: 106.66px; font: 11px sans-serif; cursor: pointer; }
+      .column img { width: 70px; height: 70px; margin: 15px 0px 5px; }
+      iframe { -webkit-transition: -webkit-transform 0.5s; transition: transform 0.5s; width: 320px; height: 568px; border: 0; }
+    </style>
+
+    <script>
+        function loadIframe(url) {
+            var iframe = document.createElement('iframe');
+            var screen = document.getElementById('screen');
+            iframe.src = url;
+            iframe.onload = function () {
+                this.style['transform'] = 'translateY(-100%)';
+                this.style['-webkit-transform'] = 'translateY(-100%)';
+            };
+            screen.appendChild(iframe);
+        }
+
+        window.onload = function () {
+            document.getElementById('home').addEventListener('click', function (event) {
+                var iframe = document.getElementsByTagName('iframe')[0];
+                iframe.style['transform'] = 'translateY(0%)';
+                iframe.style['-webkit-transform'] = 'translateY(0%)';
+                window.setTimeout(function () {
+                    iframe.parentNode.removeChild(iframe);
+                }, 500);
+            }, false);
+
+            document.getElementById('bridges').addEventListener('click', function (event) {
+                loadIframe('/bridges');
+            });
+
+            document.getElementById('shikaku').addEventListener('click', function (event) {
+                loadIframe('/shikaku');
+            });
+
+            document.getElementById('nonogram').addEventListener('click', function (event) {
+                loadIframe('/nonogram');
+            });
+        };
+    </script>
+</head>
+<body>
+    <div class="mobile">
+        <div class="screen" id="screen">
+            <div class="row">
+                <div class="column" id="bridges">
+                    <img src="bridges/assets/icons/120.png" alt="Let's Build Bridges"><br>
+                    Let's Build<br>
+                    Bridges
+                </div>
+
+                <div class="column" id="shikaku">
+                    <img src="shikaku/assets/icons/120.png" alt="Shikaku Madness"><br>
+                    Shikaku<br>
+                    Madness
+                </div>
+
+                <div class="column" id="nonogram">
+                    <img src="nonogram/assets/icons/120.png" alt="Nonogram Madness"><br>
+                    Nonogram<br>
+                    Madness
+                </div>
+            </div>
+            <div class="space"></div>
+        </div>
+        <button class="home" id="home"></button>
+    </div
+</body>
+</html>
