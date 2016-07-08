@@ -24,10 +24,20 @@
             a:active { color: #930; }
             a:visited { color: #609; }
             hr { border: 0; border-bottom: 1px solid #666; }
-            section img { width: 20%; float: right; border: 1px solid #333; margin: 0 0 0 1rem; }
-            section.shikaku img { float: left; margin: 0 1rem 0 0; }
-            section.about { background: #ddd; width: 80%; padding: 1%; margin: auto; box-sizing: border-box;  }
+            ul { list-style-type: circle; padding: 0 5% 0 8%; }
+            section img { width: 20%; float: right; border: 1px solid #333; margin: 0 0 0 5%; }
+            section.shikaku img { float: left; margin: 0 5% 0 0; }
+            section.about { background: #ddd; width: 80%; padding: 1%; margin: auto; box-sizing: border-box; }
             footer { text-align: center; background: black; color: white; font-size: 1.3rem; padding: 1rem; }
+            @media (max-width: 700px) {
+              body { font-size: 0.9rem; }
+              h1 { padding: 1rem 5%; }
+              .container { width: 100%; }
+              section { padding: 1% 0; }
+              section h3 { margin: 0; }
+              section.about { width: 100%; }
+              section img { width: 40%; }
+            }
         </style>
     </head>
     <body>
