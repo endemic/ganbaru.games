@@ -26,9 +26,12 @@
             hr { border: 0; border-bottom: 1px solid #666; }
             ul { list-style-type: circle; padding: 0 5% 0 8%; }
             section img { width: 20%; float: right; border: 1px solid #333; margin: 0 0 0 5%; }
-            section.shikaku img { float: left; margin: 0 5% 0 0; }
+            section.shikaku img, section.akari img { float: left; margin: 0 5% 2% 0; }
             section.about { background: #ddd; width: 900px; padding: 1%; margin: auto; box-sizing: border-box; }
             footer { text-align: center; background: black; color: white; font-size: 1.3rem; padding: 1rem; }
+
+            .clear { clear: both; }
+
             @media (max-width: 700px) {
               body { font-size: 0.9rem; }
               h1 { padding: 1rem 5%; }
@@ -46,6 +49,25 @@
         <div class="container">
 
             <h2>Online puzzle games, playable in your browser!</h2>
+
+            <section class="akari">
+                <img src="/assets/images/akari_madness.png" alt="Image of Akari Madness gameplay">
+
+                <h3><a href="/akari/" title="Play Akari Madness &rarr;">Akari Madness</a></h3>
+
+                <p>
+                    Yet another logic puzzle! Also known as "<a href="https://en.wikipedia.org/wiki/Light_Up_(puzzle)">Light Up</a>",
+                    the goal is to illuminate the entire game board by strategicly placing lights such that no two shine on each other.
+                    Another limitation is that there are black cells which block light. These cells may also display a number, which
+                    indicates the number of lights that <strong>must</strong> be placed in one of the four adjacent cells (lights placed
+                    diagonally do not count). Otherwise, there are no restrictions about where to place lights, as long as they don't
+                    shine on each other.
+                </p>
+
+                <h3><a href="/akari/" title="Play Akari Madness &rarr;">Play Akari Madness &rarr;</a></h3>
+            </section>
+
+            <hr class="clear">
 
             <section class="bridges">
                 <img src="https://nathandemick.com/assets/images/lets-build-bridges.png" alt="Image of Let's Build Bridges gameplay">
