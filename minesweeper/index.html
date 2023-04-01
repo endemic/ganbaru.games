@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Minësweeper</title>
+
+  <meta charset="utf8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="meta/apple-touch-icon.png">
+
+  <link rel="icon" type="image/png" href="images/flag.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="meta/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="meta/favicon-32x32.png">
+
+  <link rel="manifest" href="meta/site.webmanifest">
+
+  <meta property="og:title" content="Minesweeper" />
+  <meta property="og:description" content="Waste even moar time on the internet with this Minesweeper clone." />
+  <meta property="og:url" content="https://ganbarugames.com/minesweeper" />
+  <meta property="og:image" content="meta/favicon-32x32.png" />
+
+  <script src="scripts/grid.js"></script>
+  <script src="scripts/minesweeper.js"></script>
+
+  <link rel="stylesheet" href="stylesheets/main.css">
+</head>
+
+<body>
+  <main id="game">
+    <button id="face">😃</button>
+
+    <section id="info">
+      <section id="timer">00:00</section>
+      <section id="flags">10</section>
+    </section>
+
+    <button id="settings">⚙️</button>
+
+    <section id="grid"></section>
+  </main>
+
+  <script>
+    new Game();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('scripts/service_worker.js')
+        .then(() => { console.log('Service Worker Registered'); });
+    }
+  </script>
+</body>
+
+</html>
