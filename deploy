@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+# archive, verbose, don't sync deploy script, use ssh remote shell
+rsync -av --exclude 'deploy' -e ssh ./* ganbaru.games:/var/www/ganbaru.games/html
