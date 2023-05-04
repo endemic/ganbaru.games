@@ -177,15 +177,11 @@ class Game extends Grid {
     }
 
     onTouchStart(event) {
-        event.preventDefault();
-
         // store where the player first touched the screen
         this.currentTouch = event.changedTouches[0];  // only care about the first touch
     }
 
     onTouchEnd(event) {
-        event.preventDefault();
-
         // store local ref to last touch
         const endTouch = event.changedTouches[0];
 
@@ -280,8 +276,6 @@ class Game extends Grid {
             this.updateScore(1);
 
             this.updateSpeedInMs -= 5;
-
-            console.log(`update speed: ${this.updateSpeedInMs}`);
 
             // make a new apple
             nextDisplayState = this.makeApple(nextDisplayState);
