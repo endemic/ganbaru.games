@@ -1,191 +1,238 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Ganbaru Games | Puzzle games on your Android/iPhone or desktop</title>
-        <meta name="description" content="Play puzzle games online at ganbarugames.com! Playable on Android/iPhone and desktop web browsers.">
+  <head>
+    <meta charset="utf-8">
+    <title>Ganbaru Games | Puzzle games on your Android/iPhone or desktop</title>
+    <meta name="description" content="Play puzzle games online at ganbarugames.com! Playable on Android/iPhone and desktop web browsers.">
 
-        <style media="screen">
-            @font-face {
-                font-family: 'ubuntu_monoregular';
-                src: url('assets/fonts/ubuntumono-r-webfont.woff2') format('woff2'),
-                     url('assets/fonts/ubuntumono-r-webfont.woff') format('woff');
-                font-weight: normal;
-                font-style: normal;
-            }
+    <style media="screen">
+      @font-face {
+        font-family: 'ubuntu_monoregular';
+        src: url('assets/fonts/ubuntumono-r-webfont.woff2') format('woff2'),
+           url('assets/fonts/ubuntumono-r-webfont.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
 
-            body { margin: 0; padding: 0; font-family: ubuntu_monoregular; background: #444; }
-            h1 { padding: 1rem 10%; margin: 0; background: black; color: white; font-weight: bold; }
-            h1 .henohenomoheji { background: url('assets/images/henohenomoheji.png'); height: 30px; width: 30px; display: inline-block; background-size: contain; vertical-align: text-top; margin-right: 0.3rem; }
-            h2 { padding: 1rem; margin: 0; background: #069; color: white; font-weight: bold; }
-            .container { width: 900px; padding: 1%; margin: auto; background: white; box-sizing: border-box; }
-            a { color: #069; }
-            a:hover { text-decoration: none; }
-            a:active { color: #930; }
-            a:visited { color: #609; }
-            hr { border: 0; border-bottom: 1px solid #666; }
-            ul { list-style-type: circle; padding: 0 5% 0 8%; }
-            section img { width: 20%; float: right; border: 1px solid #333; margin: 0 0 0 5%; }
-            section.shikaku img, section.akari img { float: left; margin: 0 5% 2% 0; }
-            section.about { background: #ddd; width: 900px; padding: 1%; margin: auto; box-sizing: border-box; }
-            footer { text-align: center; background: black; color: white; font-size: 1.3rem; padding: 1rem; }
+      body { margin: 0; padding: 0; font-family: ubuntu_monoregular; background: #444; }
+      h1 { padding: 1rem 10%; margin: 0; background: black; color: white; font-weight: bold; }
+      h1 .henohenomoheji { background: url('assets/images/henohenomoheji.png'); height: 30px; width: 30px; display: inline-block; background-size: contain; vertical-align: text-top; margin-right: 0.3rem; }
+      h2 { padding: 1rem; margin: 0 0 1.5rem 0; background: #069; color: white; font-weight: bold; }
+      .container { width: 900px; padding: 1%; margin: auto; background: white; box-sizing: border-box; }
+      a { color: #069; }
+      a:hover { text-decoration: none; }
+      a:active { color: #930; }
+      a:visited { color: #609; }
+      hr { border: 0; border-bottom: 0.1rem solid #999; margin: 1.5rem 0; }
+      ul { list-style-type: circle; padding: 0 5% 0 8%; }
+      section { display: flex; gap: 1.5rem; }
+      section img { max-width: 200px; }
+      section h3:first-child { margin-top: 0; }
+      footer { text-align: center; background: black; color: white; font-size: 1.3rem; padding: 1rem; }
 
-            .clear { clear: both; }
+      #about { display: block; background: #ddd; width: 900px; padding: 1%; margin: auto; box-sizing: border-box; }
+      #grid-based-games > div { flex: 1 1 0px; }
+      #grid-based-games h4 { margin-top: 0; }
 
-            @media (max-width: 700px) {
-              body { font-size: 0.9rem; }
-              h1 { padding: 1rem 5%; }
-              .container { width: 100%; }
-              section { padding: 1% 0; }
-              section h3 { margin: 0; }
-              section.about { width: 100%; }
-              section img { width: 40%; }
-            }
-        </style>
-    </head>
-    <body>
-        <h1><span class="henohenomoheji"></span>Ganbaru Games</h1>
+      @media (max-width: 700px) {
+        body { font-size: 0.9rem; }
+        h1 { padding: 1rem 5%; }
+        .container { width: 100%; }
+        section { padding: 1% 0; }
+        section h3 { margin: 0; }
+        section.about { width: 100%; }
+        section img { width: 40%; }
+      }
+    </style>
+  </head>
+  <body>
+    <h1><span class="henohenomoheji"></span>Ganbaru Games</h1>
 
-        <div class="container">
+    <div class="container">
 
-            <h2>Online puzzle games, playable in your browser!</h2>
+      <h2>Online puzzle games, playable in your browser!</h2>
 
-            <section class="akari">
-                <img src="/assets/images/akari_madness.png" alt="Image of Akari Madness gameplay">
+      <section id="grid-based-games">
+        <div class="description">
+          <h3>Grid-based games</h3>
 
-                <h3><a href="/akari/" title="Play Akari Madness &rarr;">Akari Madness</a></h3>
+          <p>My current project: implement as many different types of games as possible using <a href="https://github.com/endemic/gridjs">a 2D array to represent game state.</a></p>
+        </div>
 
-                <p>
-                    Yet another logic puzzle! Also known as "<a href="https://en.wikipedia.org/wiki/Light_Up_(puzzle)">Light Up</a>",
-                    the goal is to illuminate the entire game board by strategicly placing lights such that no two shine on each other.
-                    Another limitation is that there are black cells which block light. These cells may also display a number, which
-                    indicates the number of lights that <strong>must</strong> be placed in one of the four adjacent cells (lights placed
-                    diagonally do not count). Otherwise, there are no restrictions about where to place lights, as long as they don't
-                    shine on each other.
-                </p>
+        <div>
+          <h4>Playable</h4>
 
-                <h3><a href="/akari/" title="Play Akari Madness &rarr;">Play Akari Madness &rarr;</a></h3>
-            </section>
+          <ul>
+            <li><a href="/snaaaake" title="Snaaaake">Snaaaake</a></li>
+            <li><a href="/minesweeper" title="Minesweeper">Minesweeper</a></li>
+          </ul>
+        </div>
 
-            <hr class="clear">
+        <div>
+          <h4>In progress</h4>
 
-            <section class="bridges">
-                <img src="https://nathandemick.com/assets/images/lets-build-bridges.png" alt="Image of Let's Build Bridges gameplay">
+          <ul>
+            <li>Tetris</li>
+            <li>2048</li>
+          </ul>
+        </div>
 
-                <h3><a href="/bridges/" title="Play Let's Build Bridges &rarr;">Let's Build Bridges</a></h3>
+      </section>
 
-                <p>
-                    Let's Build Bridges is a collection of logic puzzles, also known
-                    as Hashi, Bridges, or Chopsticks. The goal of each puzzle is to
-                    connect all the "islands" by drawing a series of "bridges"
-                    between them. The rules are:
-                </p>
+      <hr>
 
-                <ul>
-                    <li>Bridges must start and end at an island.</li>
-                    <li>Bridges can only be drawn in straight lines (not diagonally!)</li>
-                    <li>Bridges cannot cross each other.</li>
-                    <li>At most, two bridges can be drawn between islands.</li>
-                    <li>The number of bridges connected to each island must match the number on the island.</li>
-                    <li>The bridges must connect <strong>all</strong> the islands together.</li>
-                </ul>
+      <section id="akari">
+        <div class="description">
+          <h3>Akari Madness</h3>
 
-                <p>
-                    The first few puzzles are easy, but watch out, as the difficulty
-                    ramps up quickly! There are 100 puzzles to solve. Have fun
-                    building bridges!
-                </p>
+          <p>
+            Yet another logic puzzle! Also known as "<a href="https://en.wikipedia.org/wiki/Light_Up_(puzzle)">Light Up</a>",
+            the goal is to illuminate the entire game board by strategicly placing lights such that no two shine on each other.
+            Another limitation is that there are black cells which block light. These cells may also display a number, which
+            indicates the number of lights that <strong>must</strong> be placed in one of the four adjacent cells (lights placed
+            diagonally do not count). Otherwise, there are no restrictions about where to place lights, as long as they don't
+            shine on each other.
+          </p>
 
-                <h3><a href="/bridges/" title="Play Let's Build Bridges &rarr;">Play Let's Build Bridges &rarr;</a></h3>
-            </section>
+          <h3><a href="/akari" title="Play Akari Madness &rarr;">Play Akari Madness &rarr;</a></h3>
+        </div>
 
-            <hr>
+        <a href="/akari" title="Play Akari Madness &rarr;">
+          <img src="/assets/images/akari_madness.png" alt="Image of Akari Madness gameplay">
+        </a>
+      </section>
 
-            <section class="shikaku">
-                <img src="https://nathandemick.com/assets/images/shikaku-madness.png" alt="Image of Shikaku Madness gameplay">
+      <hr>
 
-                <h3><a href="/shikaku/" title="Play Shikaku Madness &rarr;">Shikaku Madness</a></h3>
+      <section id="bridges">
+        <a href="/bridges/" title="Play Let's Build Bridges &rarr;">
+          <img src="/assets/images/lets-build-bridges.png" alt="Image of Let's Build Bridges gameplay">
+        </a>
 
-                <p>
-                    Are you a puzzle maniac? Do you eat Japanese logic games like
-                    sudoku and nonograms for breakfast? Give Shikaku Madness a try.
-                    It's a fun and challenging game, with lots of unique puzzles to
-                    solve. Bust your brain as you try to figure out how to
-                    completely cover the game grid using squares and rectangles.
-                    Sound complicated? Don't worry! The first few levels provide an
-                    interactive tutorial to help new players learn the rules.
-                </p>
+        <div class="description">
+          <h3>Let's Build Bridges</h3>
 
-                <p>
-                    Click &amp; drag on the puzzle grid to draw. Each
-                    number on the grid is a clue; the number represents the size of
-                    the rectangle that overlaps it. For example, a clue of "9" means
-                    that you need to draw a 3x3 square on top of that clue. The
-                    trick is to draw each square and rectangle so that there's no
-                    wasted space on the grid. You can't overlap squares, either.
-                    Fortunately, there's no time limit, and you can always try again
-                    if you make a mistake.
-                </p>
+          <p>
+            Let's Build Bridges is a collection of logic puzzles, also known
+            as Hashi, Bridges, or Chopsticks. The goal of each puzzle is to
+            connect all the "islands" by drawing a series of "bridges"
+            between them. The rules are:
+          </p>
 
-                <h3><a href="/shikaku/" title="Play Shikaku Madness &rarr;">Play Shikaku Madness &rarr;</a></h3>
-            </section>
+          <ul>
+            <li>Bridges must start and end at an island.</li>
+            <li>Bridges can only be drawn in straight lines (not diagonally!)</li>
+            <li>Bridges cannot cross each other.</li>
+            <li>At most, two bridges can be drawn between islands.</li>
+            <li>The number of bridges connected to each island must match the number on the island.</li>
+            <li>The bridges must connect <strong>all</strong> the islands together.</li>
+          </ul>
 
-            <hr>
+          <p>
+            The first few puzzles are easy, but watch out, as the difficulty
+            ramps up quickly! There are 100 puzzles to solve. Have fun
+            building bridges!
+          </p>
 
-            <section class="nonogram">
-                <img src="https://nathandemick.com/assets/images/nonogram-madness.png" alt="Image of Nonogram Madness gameplay">
+          <h3><a href="/bridges/" title="Play Let's Build Bridges &rarr;">Play Let's Build Bridges &rarr;</a></h3>
+        </div>
+      </section>
 
-                <h3><a href="/nonogram/" title="Play Nonogram Madness &rarr;">Nonogram Madness</a></h3>
+      <hr>
 
-                <p>
-                    A fun &amp; challenging puzzle game; best described as a mix
-                    between sudoku and crosswords. Use the provided clues to fill in
-                    the correct blocks in the grid, revealing a hidden picture.
-                    Complete the included "easy" difficulty puzzles, and if you're
-                    up to the challenge, unlock the "medium" and "hard" difficulties
-                    for hours of puzzling fun. Includes an interactive tutorial to
-                    get beginners up to speed. Think you're a nonogram master? Try
-                    solving the randomly generated puzzles for infinite replay value!
-                </p>
+      <section class="shikaku">
+        <div class="description">
+          <h3>Shikaku Madness</h3>
 
-                <p>
-                    The goal of a nonogram puzzle is to "fill" all the correct
-                    blocks in a grid. The key to solving each puzzle is the numbers
-                    on the top and left of the grid. Each number gives you a clue
-                    about how many blocks are filled in each row or column. For
-                    example, if the clue for a row was "4 3 1", that means there are
-                    four sequentially filled blocks, a gap of one (or more), three
-                    filled blocks, another gap, and then finally one filled block on
-                    its own. In a 10x10 puzzle grid, this clue solves the whole row:
-                    4 filled + 1 blank + 3 filled + 1 blank + 1 filled = 10 total.
-                    Solve easy clues first, then you can logically fill in the rest
-                    of the blocks in the grid.
-                </p>
+          <p>
+            Are you a puzzle maniac? Do you eat Japanese logic games like
+            sudoku and nonograms for breakfast? Give Shikaku Madness a try.
+            It's a fun and challenging game, with lots of unique puzzles to
+            solve. Bust your brain as you try to figure out how to
+            completely cover the game grid using squares and rectangles.
+            Sound complicated? Don't worry! The first few levels provide an
+            interactive tutorial to help new players learn the rules.
+          </p>
 
-                <h3><a href="/nonogram/" title="Play Nonogram Madness &rarr;">Play Nonogram Madness &rarr;</a></h3>
-            </section>
-        </div>  <!-- /.container -->
+          <p>
+            Click &amp; drag on the puzzle grid to draw. Each
+            number on the grid is a clue; the number represents the size of
+            the rectangle that overlaps it. For example, a clue of "9" means
+            that you need to draw a 3x3 square on top of that clue. The
+            trick is to draw each square and rectangle so that there's no
+            wasted space on the grid. You can't overlap squares, either.
+            Fortunately, there's no time limit, and you can always try again
+            if you make a mistake.
+          </p>
 
-        <section class="about">
-            <p>
-                Ganbaru Games publishes puzzle games written by
-                <a href="https://nathandemick.com" title="Nathan Demick">Nathan Demick</a>.
-                Each game is playable in both smartphone and desktop web browsers.
-                In fact, you can load a game, then "save to homescreen" on your
-                smartphone to have convenient access at any time!
-            </p>
+          <h3><a href="/shikaku/" title="Play Shikaku Madness &rarr;">Play Shikaku Madness &rarr;</a></h3>
+        </div>
 
-            <p>
-                If you have suggestions for the next game I should make, or
-                problems with the site, please send a message to
-                <a href="mailto:support@ganbarugames.com">support@ganbarugames.com</a>.
-            </p>
+        <a href="/shikaku/" title="Play Shikaku Madness &rarr;">
+          <img src="/assets/images/shikaku-madness.png" alt="Image of Shikaku Madness gameplay">
+        </a>
+      </section>
 
-            <p><a href="/privacy.html" title="Privacy Policy">Privacy Policy</a></p>
-        </section>
+      <hr>
 
-        <footer>
-            &copy; 2022 Ganbaru Games, LLC.
-        </footer>
-    </body>
+      <section class="nonogram">
+        <a href="/nonogram/" title="Play Nonogram Madness &rarr;">
+          <img src="/assets/images/nonogram-madness.png" alt="Image of Nonogram Madness gameplay">
+        </a>
+
+        <div class="description">
+          <h3>Nonogram Madness</h3>
+
+          <p>
+            A fun &amp; challenging puzzle game; best described as a mix
+            between sudoku and crosswords. Use the provided clues to fill in
+            the correct blocks in the grid, revealing a hidden picture.
+            Complete the included "easy" difficulty puzzles, and if you're
+            up to the challenge, unlock the "medium" and "hard" difficulties
+            for hours of puzzling fun. Includes an interactive tutorial to
+            get beginners up to speed. Think you're a nonogram master? Try
+            solving the randomly generated puzzles for infinite replay value!
+          </p>
+
+          <p>
+            The goal of a nonogram puzzle is to "fill" all the correct
+            blocks in a grid. The key to solving each puzzle is the numbers
+            on the top and left of the grid. Each number gives you a clue
+            about how many blocks are filled in each row or column. For
+            example, if the clue for a row was "4 3 1", that means there are
+            four sequentially filled blocks, a gap of one (or more), three
+            filled blocks, another gap, and then finally one filled block on
+            its own. In a 10x10 puzzle grid, this clue solves the whole row:
+            4 filled + 1 blank + 3 filled + 1 blank + 1 filled = 10 total.
+            Solve easy clues first, then you can logically fill in the rest
+            of the blocks in the grid.
+          </p>
+
+          <h3><a href="/nonogram/" title="Play Nonogram Madness &rarr;">Play Nonogram Madness &rarr;</a></h3>
+        </div>
+      </section>
+    </div>  <!-- /.container -->
+
+    <section id="about">
+      <p>
+        Ganbaru Games publishes puzzle games written by
+        <a href="https://nathandemick.com" title="Nathan Demick">Nathan Demick</a>.
+        Each game is playable in both smartphone and desktop web browsers.
+        In fact, you can load a game, then "save to homescreen" on your
+        smartphone to have convenient access at any time!
+      </p>
+
+      <p>
+        If you have suggestions for the next game I should make, or
+        problems with the site, please send a message to
+        <a href="mailto:support@ganbarugames.com">support@ganbarugames.com</a>.
+      </p>
+
+      <p><a href="/privacy.html" title="Privacy Policy">Privacy Policy</a></p>
+    </section>
+
+    <footer>
+      &copy; 2023 Ganbaru Games, LLC.
+    </footer>
+  </body>
 </html>
