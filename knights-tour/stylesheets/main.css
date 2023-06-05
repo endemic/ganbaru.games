@@ -1,0 +1,75 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font: 1rem monospace;
+}
+
+body {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+header {
+  background: black;
+  box-sizing: border-box;
+  color: white;
+  font: bold 2rem monospace;
+  padding: 0.75rem;
+  text-align: center;
+  width: 100%;
+}
+
+main {
+  box-sizing: border-box;
+  padding: 1rem;
+  width: 100%;
+}
+
+#meta {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  align-items: center;
+}
+
+#grid {
+  box-sizing: border-box;
+  border-bottom: 0;
+  border-right: 0;
+  border: 1px solid black;
+  user-select: none;
+  -webkit-user-select: none; /* really? */
+  touch-action: manipulation; /* allow pan/zoom, but not double-tap to zoom */
+  width: 100%;
+}
+
+#grid>div {
+  border-left: 0;
+  border-top: 0;
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+#grid > div.even { background-color: white; }
+#grid > div.odd { background-color: black; }
+#grid > div.visited {
+  background: url('../images/background.png') center/4px;
+  image-rendering: pixelated;
+}
+#grid > div.knight-even { background: url('../images/knight_even.png') white center/50% no-repeat; }
+#grid > div.knight-odd { background: url('../images/knight_odd.png') black center/50% no-repeat; }
+
+/* https://css-tricks.com/svg-marching-ants/ */
+#grid > div.valid-even { background: url('../images/valid_even.svg') white; }
+#grid > div.valid-odd { background: url('../images/valid_odd.svg') black; }
+
+
+/* desktop styles */
+@media (min-width: 768px) and (orientation: landscape) {
+  main {
+    padding: 1.5rem;
+    width: 50%;
+  }
+}
