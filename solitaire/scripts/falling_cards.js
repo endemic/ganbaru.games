@@ -28,7 +28,7 @@ const fallingCards = (canvas, foundations) => {
     // TODO: ensure that each foundation is picked fairly equally
     let f = foundations[Math.floor(Math.random() * foundations.length)];
 
-    let card = getLastCard(f);
+    let card = f.lastCard;
 
     // detatch card
     card.parent.child = null;
@@ -48,7 +48,7 @@ const fallingCards = (canvas, foundations) => {
       movingCard = getNextFallingCard();
     }
 
-    context.drawImage(movingCard.image, movingCard.x, movingCard.y);
+    context.drawImage(movingCard.image, movingCard.x, movingCard.y, movingCard.width, movingCard.height);
 
     // determine next position
     movingCard.x += movingCard.velocity.x;

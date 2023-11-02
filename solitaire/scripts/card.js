@@ -1,9 +1,5 @@
-class Card {
+export default class Card {
   faceUp = false;
-  x = 0;
-  y = 0;
-  width = 75;
-  height = 100;
   backImg = null;
   frontImg = null;
   suit = null;
@@ -11,6 +7,8 @@ class Card {
 
   parent = null;
   child = null;
+
+  allRanks = ['ace', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'jack', 'queen', 'king'];
 
   constructor(rank, suit, images) {
     this.rank = rank;
@@ -30,5 +28,19 @@ class Card {
 
   toString() {
     return `${this.rank} ${this.suit}`;
+  }
+
+  get color() {
+    if (this.suit === 'hearts' || this.suit === 'diamonds') {
+      return 'red';
+    }
+
+    return 'black';
+  }
+
+  // returns this - b; e.g. 5 - 2 = 3
+  // used to ensure sequential card placement
+  diff(b) {
+    return this.allRanks.indexOf(this.rank) - this.allRanks.indexOf(b.rank);
   }
 }
