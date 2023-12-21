@@ -38,6 +38,12 @@ export default class Foundation extends Stack {
     }
 
     return false;
-  };
+  }
 
+  get size() {
+    let height = this.height;
+    let width = this.width;
+
+    return { width, height };
+  }
 }

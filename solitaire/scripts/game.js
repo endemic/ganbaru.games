@@ -5,10 +5,18 @@ import Foundation from './foundation.js';
 import Pile from './pile.js';
 import Grabbed from './grabbed.js';
 
+import MenuBar from './menu-bar.js';
+import StatusBar from './status-bar.js';
+
+import { IMG_SRC, SUITS, RANKS } from './constants.js';
+import CardWaterfall from './card-waterfall.js';
+
+import Sona from './sona.js';
+
 const IMAGES = {};
 let loadedImageCount = 0;
 
-const onImageLoad = e => {
+const onImageLoad = () => {
   // TODO: display a progress bar or something
   loadedImageCount += 1;
 
@@ -16,9 +24,11 @@ const onImageLoad = e => {
   if (loadedImageCount === IMG_SRC.length) {
     // TODO: initialize the canvas before this, so a "loading" progress bar can be
     // displayed (or "Loading..." text)
-    new Klondike();
+
+    // also ensure
+    document.fonts.ready.then(() => new Klondike());
   }
-}
+};
 
 // enumerate over image sources, and load them into memory
 IMG_SRC.forEach(src => {
@@ -29,6 +39,22 @@ IMG_SRC.forEach(src => {
   IMAGES[key].src = src;
   IMAGES[key].addEventListener('load', onImageLoad);
 });
+
+// load custom font
+const font = new FontFace('Generic Mobile System', 'url(fonts/generic-mobile-system.woff2)');
+document.fonts.add(font);
+font.load();
+
+// load sounds
+const sfx = new Sona([
+  'sounds/flip_1.mp3',
+  'sounds/flip_2.mp3',
+  'sounds/flip_3.mp3',
+  'sounds/flip_4.mp3',
+  'sounds/flip_5.mp3'
+]);
+
+await sfx.load();
 
 // ----------------------------------------------
 
@@ -44,7 +70,7 @@ class Klondike {
   lastOnDownTimestamp = Date.now();
 
   // stores reference to falling cards animation
-  interval;
+  waterfall = null;
 
   // initialize all places where a card can be placed - https://en.wikipedia.org/wiki/Glossary_of_patience_terms
 
@@ -72,17 +98,15 @@ class Klondike {
     this.canvas = document.getElementById('game');
     this.context = this.canvas.getContext('2d');
 
+    this.status = new StatusBar(this.canvas);
+    this.menu = new MenuBar(this.canvas);
+
     // initialize list of cards
     SUITS.forEach(suit => {
       RANKS.forEach(rank => {
         this.cards.push(new Card(rank, suit, IMAGES));
       });
     });
-
-    this.deal();
-
-    // initial draw/resize
-    this.onResize();
 
     // various event listeners
     this.canvas.addEventListener('mousedown', e => this.onDown(e));
@@ -95,8 +119,16 @@ class Klondike {
 
     window.addEventListener('resize', e => this.onResize(e));
     window.addEventListener('keydown', e => this.undo(e));
+
+    // put cards in appropriate places
+    this.deal();
+
+    // initial draw/resize
+    this.onResize();
   }
 
+  // abstract getting x/y coords for user interactions for both
+  // multitouch and traditional (e.g. mouse/trackpad)
   getCoords(event) {
     if (event.changedTouches && event.changedTouches.length > 0) {
       return {
@@ -105,20 +137,100 @@ class Klondike {
       };
     }
 
-    // this seems to translate to <canvas> coordinates
     return {
       x: event.x,
       y: event.y
-    }
+    };
+  }
+
+  reset() {
+    this.waterfall = null;
+    this.status.reset();
+    this.deal();
+    this.draw();
   }
 
   deal() {
     const piles = this.piles;
     const talon = this.talon;
+    const waste = this.waste;
+    const foundations = this.foundations;
 
     const deck = [];
 
-    this.cards.forEach(card => deck.push(card));
+    this.cards.forEach(card => {
+      // ensure any link between cards is broken
+      card.child = null;
+      card.parent = null;
+      card.faceUp = false;
+
+      deck.push(card);
+    });
+
+    // reset all stacks
+    talon.reset();
+    waste.reset();
+    piles.forEach(p => p.reset());
+    foundations.forEach(f => f.reset());
+
+    this.debug = false;
+
+    if (this.debug) {
+      // this code places all cards in foundations and triggers endgame
+      for (let i = 0; i < 52; i += 1) {
+        let index = Math.floor(i / 13);
+        let f = this.foundations[index];
+        let card = this.cards[i];
+        let parent = f.lastCard;
+
+        console.log(`putting ${card} on ${parent} in foundation ${index}`);
+
+        card.faceUp = true;
+        card.x = parent.x;
+        card.y = parent.y;
+
+        parent.child = card;
+        card.parent = parent;
+      }
+
+      this.draw();
+
+      this.status.stopTimer();
+      this.waterfall = new CardWaterfall(this.canvas, this.foundations, () => { this.reset(); });
+
+      return;
+    }
+
+    // arrange cards for testing endgame
+    if (this.debug) {
+      // this.cards contains ace -> king in asc order, with suits
+      // hearts -> diamonds -> spades -> clubs
+      let indices = [];
+      for (let i = 12; i >= 0; i -= 1) {
+        let row = [i, i + 13, i + 26, i + 39];
+        if (i % 2 === 1) {
+          // reverse every other row so black plays on red, etc.
+          row.reverse(); // mutates in place
+        }
+        indices.push(row);
+      }
+
+      for (let i = 0; i < indices.length; i += 1) {
+        let row = indices[i];
+        for (let j = 0; j < row.length; j += 1) {
+          const pile = piles[j];
+          const parent = pile.lastCard;
+          const card = deck[row[j]];
+
+          card.faceUp = true;
+
+          parent.child = card;
+          card.parent = parent;
+        }
+      }
+
+      return;
+    }
 
     // shuffle deck
     let currentIndex = deck.length;
@@ -133,8 +245,6 @@ class Klondike {
       // And swap it with the current element.
       [deck[currentIndex], deck[randomIndex]] = [deck[randomIndex], deck[currentIndex]];
     }
-
-    // TODO: reset all parent/child relationships
 
     // populate the playing piles
     // This is super janky -- there is probably a better way to do this
@@ -182,12 +292,14 @@ class Klondike {
 
     // draw any cards currently being moved by player
     this.grabbed.draw(this.context);
+
+    this.menu.draw();
+    this.status.draw();
   }
 
   checkWin() {
-    // ensure that each foundation has 13 cards; we
-    // don't check for matching suit or ascending rank because
-    // those checks are done when the card is laid down
+    // ensure that each foundation has 13 cards; we don't check for matching suit
+    // or ascending rank because those checks are done when the card is played
     return this.foundations.every(f => {
       let count = 0;
       let parent = f;
@@ -202,9 +314,7 @@ class Klondike {
   }
 
   attemptToPlayOnFoundation(card) {
-    // check the last card of each foundation
-    // and see if the card passed as an arg can be played
-    // loop is reversed so the nearest foundation is checked first
+    // loop is reversed so the foundation nearest the waste is checked first
     for (let i = this.foundations.length - 1; i >= 0; i -= 1) {
       let f = this.foundations[i];
 
@@ -212,8 +322,8 @@ class Klondike {
         let target = f.lastCard;
 
         this.undoStack.push({
-          card: card,
-          target: target,
+          card,
+          target,
           parent: card.parent
         });
 
@@ -224,24 +334,36 @@ class Klondike {
         target.child = card;
         card.parent = target;
 
-        // update tableau display
+        // update tableau
         this.draw();
 
-        // check for win condition
-        // TODO: move this elsewhar
-        if (this.checkWin()) {
-          this.interval = fallingCards(this.canvas, this.foundations);
-        }
+        this.cardSfx();
+
+        this.status.updateScore(10);
 
         // card was played, so no longer need to check
         // subsequent foundations
         break;
       }
     }
+
+    // See if the most recent move was a winning one
+    // TODO: move this elsewhar?
+    if (this.checkWin()) {
+      this.status.stopTimer();
+
+      this.waterfall = new CardWaterfall(this.canvas, this.foundations, () => { this.reset(); });
+    }
   }
 
   onDown(e) {
     e.preventDefault();
+
+    if (this.waterfall) {
+      this.waterfall.stop();
+      this.waterfall = null;
+      return;
+    }
 
     const delta = Date.now() - this.lastOnDownTimestamp;
     const doubleClick = delta < 500;
@@ -250,6 +372,10 @@ class Klondike {
     // if the current click counts as "double", then set the timestamp way in the past
     // otherwise you get a "3 click double click" because the 2nd/3rd clicks are too close together
     this.lastOnDownTimestamp = doubleClick ? 0 : Date.now();
+
+    // console.log(`Double-click? ${doubleClick ? 'Yes!' : 'No :('}; last "on down" timestamp: ${this.lastOnDownTimestamp}`);
+
+    this.status.startTimer();
 
     const point = this.getCoords(e);
     const talon = this.talon;
@@ -293,7 +419,11 @@ class Klondike {
 
           // TODO: possible to undo this operation?
         }
+
+        this.status.updateScore(-100);
       }
+
+      this.cardSfx();
     }
 
     // if player clicks the waste pile
@@ -317,6 +447,8 @@ class Klondike {
       // add to stack which player is "holding"
       this.grabbed.child = card;
 
+      this.grabbed.source = 'waste';
+
       // set offset at which the card is grabbed
       this.grabbed.setOffset(point);
 
@@ -337,6 +469,8 @@ class Klondike {
         // add to stack which player is "holding"
         this.grabbed.child = card;
 
+        this.grabbed.source = 'foundation';
+
         // set offset at which the card is grabbed
         this.grabbed.setOffset(point);
 
@@ -346,7 +480,6 @@ class Klondike {
     });
 
     // check for picking up cards on play piles
-    // piles.forEach(p => {
     for (let i = 0; i < piles.length; i += 1) {
       const p = piles[i];
 
@@ -365,12 +498,15 @@ class Klondike {
           // draw the now face-up card
           this.draw();
 
+          // you get some points
+          this.status.updateScore(5);
+
+          this.cardSfx();
+
           // don't allow the same click to both turn over _and_ grab card
           return;
         }
 
-        // TODO: is this problematic because it only returns from the `forEach` callback,
-        // instead of stopping execution of the entire `onDown` method?
         if (doubleClick) {
           // try to play the card directly on to one of the foundations
           this.attemptToPlayOnFoundation(card);
@@ -387,6 +523,8 @@ class Klondike {
 
         // add to stack which player is "holding"
         this.grabbed.child = card;
+
+        this.grabbed.source = 'pile';
 
         // set offset at which the card is grabbed
         this.grabbed.setOffset(point);
@@ -418,8 +556,6 @@ class Klondike {
   onUp(e) {
     e.preventDefault();
 
-    let point = this.getCoords(e);
-
     const grabbed = this.grabbed;
     const foundations = this.foundations;
     const piles = this.piles;
@@ -429,6 +565,7 @@ class Klondike {
       return;
     }
 
+    // reset cursor style
     this.canvas.style.cursor = 'grab';
 
     // check if current position of card overlaps
@@ -455,6 +592,12 @@ class Klondike {
 
           target.child = card;
           card.parent = target;
+
+          if (grabbed.source === 'pile' || grabbed.source === 'talon') {
+            this.status.updateScore(10);
+          }
+
+          this.cardSfx();
 
           // successfully placed card; break out of loop,
           // because card can overlap multiple valid piles
@@ -484,6 +627,17 @@ class Klondike {
           target.child = card;
           card.parent = target;
 
+          if (grabbed.source === 'waste') {
+            this.status.updateScore(5);
+          }
+
+          // you lose points if you have to play a card back down from the foundation
+          if (grabbed.source === 'foundation') {
+            this.status.updateScore(-15);
+          }
+
+          this.cardSfx();
+
           // successfully placed card; break out of loop,
           // because card can overlap multiple valid piles
           // and shouldn't be placed in more than one pile
@@ -492,9 +646,8 @@ class Klondike {
       }
     }
 
-    // if no valid play was made
     if (!valid) {
-      // put the card back where it was
+      // if no valid play was made, put the card back where it was
       // we do this by re-establishing the link from the parent -> child,
       // so the parent object (waste, pile, etc.) will have a link to the child again
       let card = grabbed.child;
@@ -502,17 +655,27 @@ class Klondike {
       card.parent.child = card;
     }
 
-    // "release" reference to card(s)
+    // release reference to grabbed card(s)
     grabbed.child = null;
+    grabbed.source = null;
 
+    // update tableau
     this.draw();
 
     if (this.checkWin()) {
-      this.interval = fallingCards(canvas, foundations);
+      this.status.stopTimer();
+
+      this.waterfall = new CardWaterfall(this.canvas, this.foundations, () => { this.reset(); });
     }
   }
 
-  onResize(e) {
+  cardSfx() {
+    const sounds = Object.keys(sfx.buffers);
+    const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+    sfx.play(randomSound);
+  }
+
+  onResize() {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     const aspectRatio = 4 / 3;
@@ -615,6 +778,9 @@ class Klondike {
       });
     }
 
+    this.menu.resize(tableauWidth);
+    this.status.resize(tableauWidth);
+
     if (!this.interval) {
       // update screen if not displaying card waterfall
       this.draw();
@@ -628,7 +794,7 @@ class Klondike {
     }
 
     if (this.undoStack.length < 1) {
-      console.log("No previously saved moves on the undo stack.");
+      console.log('No previously saved moves on the undo stack.');
       return;
     }
 
