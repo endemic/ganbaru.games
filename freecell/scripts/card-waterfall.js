@@ -1,29 +1,34 @@
-export default class CardWaterfall {
-  currentlyFallingCard = null;
+const CardWaterfall = {
+  fallingCard: null,
+  canvas: document.querySelector('canvas'),
 
-  constructor(canvas, foundations, callback) {
-    this.canvas = canvas;
-    this.context = canvas.getContext('2d');
-
-    this.foundations = foundations;
-    this.callback = callback;
+  start(callback) {
+    // set callback function to run when waterfall is finished
+    this.callback = callback || (() => {});
 
     // get the first card
-    this.currentlyFallingCard = this.nextCard();
+    this.fallingCard = this.nextCard();
 
-    this.start();
-  }
+    // put canvas in front of DOM elements
+    this.canvas.style.zIndex = 52;
+
+    // cancel animation on user interaction
+    this.canvas.addEventListener('click', this.stop.bind(this));
+
+    // kick off animation loop
+    this.interval = window.setInterval(() => this.update(), 16);
+  },
 
   get randomSign() {
     return Math.random() > 0.5 ? 1 : -1;
-  }
+  },
 
   get randomVelocity() {
-    const scaledCanvasWidth = parseInt(this.canvas.style.width, 10);
-    const scaledCanvasHeight = parseInt(this.canvas.style.height, 10);
+    const canvasWidth = parseInt(this.canvas.style.width, 10);
+    const canvasHeight = parseInt(this.canvas.style.height, 10);
 
-    let x = scaledCanvasWidth * 0.003;
-    let y = scaledCanvasHeight * 0.005;
+    let x = canvasWidth * 0.003;
+    let y = canvasHeight * 0.005;
 
     let v = {
       x: ((Math.random() * x) + x) * this.randomSign,
@@ -33,12 +38,10 @@ export default class CardWaterfall {
     console.log(v);
 
     return v;
-  }
+  },
 
   nextCard() {
-    const foundations = this.foundations;
     // randomly choose foundation & pick top card off it
-
     let randomFoundationIndex = Math.floor(Math.random() * foundations.length);
     let f = foundations[randomFoundationIndex];
 
@@ -58,63 +61,77 @@ export default class CardWaterfall {
     card.parent.child = null;
     card.parent = null;
 
-    // give random speed; `card` is an Object, so can assign
-    // arbitrary properties
+    // give random speed; `card` is an Object, so can assign arbitrary properties
     card.velocity = this.randomVelocity;
 
     return card;
-  }
+  },
 
   update() {
-    const scaledCanvasWidth = parseInt(this.canvas.style.width, 10);
-    const scaledCanvasHeight = parseInt(this.canvas.style.height, 10);
+    const canvasWidth = parseInt(this.canvas.style.width, 10);
+    const canvasHeight = parseInt(this.canvas.style.height, 10);
+    const context = this.canvas.getContext('2d');
 
     // pick next card if the existing one goes off screen
-    if (this.currentlyFallingCard.x + this.currentlyFallingCard.width < 0 || this.currentlyFallingCard.x > scaledCanvasWidth) {
-      this.currentlyFallingCard = this.nextCard();
+    if (this.fallingCard.x + this.fallingCard.width < 0 || this.fallingCard.x > canvasWidth) {
+      this.fallingCard = this.nextCard();
     }
 
-    let currentlyFallingCard = this.currentlyFallingCard;
+    let fallingCard = this.fallingCard;
 
     // If we can't get the next card, that means we're out
-    if (!currentlyFallingCard) {
+    if (!fallingCard) {
       this.stop();
 
       return;
     }
 
-    this.context.drawImage(currentlyFallingCard.image, currentlyFallingCard.x, currentlyFallingCard.y, currentlyFallingCard.width, currentlyFallingCard.height);
+    const scale = window.devicePixelRatio;
 
-    // determine next position
-    currentlyFallingCard.x += currentlyFallingCard.velocity.x;
-    currentlyFallingCard.y += currentlyFallingCard.velocity.y;
+    context.drawImage(fallingCard.element.children[0],
+      fallingCard.x * scale, fallingCard.y * scale,
+      fallingCard.width * scale, fallingCard.height * scale);
+
+    const nextPosition = {
+      x: fallingCard.x + fallingCard.velocity.x,
+      y: fallingCard.y + fallingCard.velocity.y
+    };
 
     // don't let the card go below the bottom edge of the screen
     // TODO: this currently is broken for hidpi screens; canvas is actually 3x
-    if (currentlyFallingCard.y + currentlyFallingCard.height > scaledCanvasHeight) {
-      currentlyFallingCard.y = scaledCanvasHeight - currentlyFallingCard.height;
+    if (nextPosition.y + fallingCard.height > canvasHeight) {
+      nextPosition.y = canvasHeight - fallingCard.height;
 
       // "bounce" the card
-      currentlyFallingCard.velocity.y = -currentlyFallingCard.velocity.y * 0.85;
+      fallingCard.velocity.y = -fallingCard.velocity.y * 0.85;
     }
 
+    // Move card DOM element
+    fallingCard.moveTo(nextPosition.x, nextPosition.y);
+
     // update card velocity w/ "gravity" acceleration
-    currentlyFallingCard.velocity.y += scaledCanvasHeight * 0.001; // 0.1%
-  }
+    fallingCard.velocity.y += canvasHeight * 0.001; // 0.1%
+  },
 
   get hasCards() {
-    return this.foundations.some(f => f.hasCards);
-  }
-
-  start() {
-    this.interval = window.setInterval(() => this.update(), 16);
-  }
+    return foundations.some(f => f.hasCards);
+  },
 
   stop() {
+    // stop listening for interaction
+    this.canvas.removeEventListener('click', this.stop.bind(this));
+
+    // stop animation loop
     window.clearInterval(this.interval);
 
-    console.log('running waterfall callback');
+    // put canvas back "behind" DOM elements
+    this.canvas.style.zIndex = 0;
 
+    // erase drawn card trails
+    const context = this.canvas.getContext('2d');
+    context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    console.log('running waterfall callback');
     this.callback();
   }
-}
+};

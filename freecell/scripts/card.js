@@ -1,40 +1,205 @@
-export default class Card {
+class Card {
   faceUp = false;
-  backImg = null;
-  frontImg = null;
+
   suit = null;
   rank = null;
+
+  allRanks = ['ace', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'jack', 'queen', 'king'];
 
   parent = null;
   child = null;
 
-  // position/size values are set externally by
-  // a method that inspects viewport dimensions
-  x = null;
-  y = null;
+  // created/assigned in constructor; represents DOM element
+  element = null;
+
+  // position variables
+  x = 0;
+  y = 0;
+
+  // sizing variables; dynamically set by `onResize`
   width = null;
   height = null;
 
-  allRanks = ['ace', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'jack', 'queen', 'king'];
+  // when positioning child cards, this is how far they overlap; dynamically set by `onResize`
+  offset = null;
 
-  constructor(rank, suit, images) {
-    this.rank = rank;
-    this.suit = suit;
+  // flag whether or not a card is moving around
+  animating = false;
 
-    this.backImg = images['backs_one'];
-    this.frontImg = images[`${this.suit}_${this.rank}`];
-  }
+  // this value changes depending on where the card is dropped;
+  // it affects behavior when card is clicked/dragged
+  location = null;
 
-  get image() {
-    if (this.faceUp) {
-      return this.frontImg;
-    }
+  type = 'card';
 
-    return this.backImg;
+  constructor(suit, rank) {
+    // dynamically create DOM tree representing a card
+    // the child elements need to be <img> tags, so that we can use the image
+    // data to draw to a canvas background
+    /*
+      <div class="card">
+        <img class="front">
+        <img class="back">
+      </div>
+    */
+   this.suit = suit;
+   this.rank = rank;
+
+   this.element = document.createElement('div');
+   this.element.classList.add('card');
+
+   const front = document.createElement('img');
+   front.src = `images/${this.suit}/${this.rank}.png`;
+   front.classList.add('front');
+   const back = document.createElement('img');
+   back.src = `images/backs/one.png`;
+   back.classList.add('back');
+
+   this.element.append(front, back);
+
+   // needs to be face-down by default
   }
 
   toString() {
     return `${this.rank} ${this.suit}`;
+  }
+
+  get hasCards() {
+    return this.child !== null;
+  }
+
+  // generator to easily loop thru all child cards
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
+  *children() {
+    let card = this.child;
+
+    while (card) {
+      yield card;
+      card = card.child;
+    }
+  }
+
+  get stackType() {
+    let parent = this.parent;
+
+    while (parent.parent) {
+      parent = parent.parent;
+    }
+
+    return parent.type;
+  }
+
+  get childCount() {
+    let count = 0;
+    for (let card of this.children()) {
+      count += 1;
+    }
+    return count;
+  }
+
+  addChild(card) {
+    // remove old parent's reference to card, if necessary
+    if (card.parent) {
+      card.parent.child = null;
+    }
+
+    this.child = card;
+    card.parent = this;
+  }
+
+  setParent(newParent) {
+    // remove old parent's reference to this card, if necessary
+    if (this.parent) {
+      this.parent.child = null;
+    }
+
+    newParent.child = this;
+    this.parent = newParent;
+  }
+
+  moveTo(x, y) {
+    this.x = x;
+    this.y = y;
+
+    this.element.style.transition = 'translate 0ms linear';
+    this.element.style.translate = `${this.x}px ${this.y}px 0px`;
+  }
+
+  animateTo(x, y, callback) {
+    this.x = x;
+    this.y = y;
+
+    this.animating = true;
+    const duration = 300;
+
+    // https://www.cssportal.com/css-cubic-bezier-generator/
+    this.element.style.transition = `translate ${duration}ms cubic-bezier( 0.175, 0.885, 0.32, 1.275 )`;
+    this.element.style.translate = `${this.x}px ${this.y}px 0px`;
+
+    wait(duration).then(() => {
+      this.animating = false;
+
+      if (callback) {
+        callback();
+      }
+    });
+  }
+
+  flip(direction) {
+    let duration = 500;
+
+    // if `direction` is not set, then the effect is toggled
+    if (direction === 'up') {
+      this.faceUp = false;
+      duration = 0;
+    } else if (direction === 'down') {
+      this.faceUp = true;
+      duration = 0;
+    }
+
+    // set animation duration
+    this.element.children[0].style.transition = `transform ${duration}ms`; // front
+    this.element.children[1].style.transition = `transform ${duration}ms`; // front
+
+    // timing for this flip transition is defined in CSS
+    if (this.faceUp) {
+      this.element.children[0].style.transform = 'rotateY(-180deg)'; // front
+      this.element.children[1].style.transform = 'rotateY(0deg)';    // back
+    } else {
+      this.element.children[0].style.transform = 'rotateY(0deg)';   // front
+      this.element.children[1].style.transform = 'rotateY(180deg)'; // back
+    }
+
+    this.faceUp = !this.faceUp;
+  }
+
+  flash() {
+    this.element.style.animation = 'burst 250ms';
+    wait(250).then(() => this.element.style.animation = '');
+  }
+
+  get size () {
+    return {
+      width: this.width,
+      height: this.height
+    };
+  }
+
+  set size({width, height}) {
+    this.width = width;
+    this.height = height;
+
+    console.log(`setting card size: ${width}, ${height}`);
+
+    this.element.style.width = `${this.width}px`;
+    this.element.style.height = `${this.height}px`;
+  }
+
+  get nextCardPoint() {
+    return {
+      x: this.x,
+      y: this.y + this.offset
+    };
   }
 
   get color() {
@@ -45,22 +210,30 @@ export default class Card {
     return 'black';
   }
 
+  set zIndex(index) {
+    this.element.style.zIndex = index;
+  }
+
+  get zIndex() {
+    return parseInt(this.element.style.zIndex, 10);
+  }
+
+  resetZIndex() {
+    // update z-index to be above parent
+    let index = this.parent.zIndex + 1;
+    this.zIndex = index;
+
+    // and on all subsequent cards
+    for (let card of this.children()) {
+      index += 1;
+      card.zIndex = index;
+    }
+  }
+
   // returns this - b; e.g. 5 - 2 = 3
   // used to ensure sequential card placement
   diff(b) {
     return this.allRanks.indexOf(this.rank) - this.allRanks.indexOf(b.rank);
-  }
-
-  get childCount() {
-    let card = this;
-    let count = 1;
-
-    while (card.child) {
-      count += 1;
-      card = card.child;
-    }
-
-    return count;
   }
 
   get childrenInSequence() {
@@ -69,16 +242,12 @@ export default class Card {
       return true;
     }
 
-    let card = this.child;
-
-    // go thru each child, and if it's the same color as the parent, OR the value difference
-    // is greater than -1, then it's not an alternating sequence, and we can return (false) early
-    while (card) {
+    // if card is same color as previous, or the rank difference is greater than 1,
+    // then the subsequent cards are not in sequence
+    for (let card of this.children()) {
       if (card.parent.color === card.color || card.diff(card.parent) !== -1) {
         return false;
       }
-
-      card = card.child;
     }
 
     return true;

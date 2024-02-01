@@ -1,33 +1,28 @@
-import Stack from './stack.js';
+class Cell extends Stack {
+  type = 'cell';
 
-export default class Cell extends Stack {
-  constructor(targetImage) {
-    super('cell');
+  constructor() {
+    super();
 
-    this.image = targetImage;
-  }
-
-  draw(context) {
-    // TODO: cells are only allowed to store one card
-    if (!this.hasCards) {
-      context.drawImage(this.image, this.x, this.y, this.width, this.height);
-
-      return;
-    }
-
-    let card = this.child;
-
-    // ensure card has correct coordinates
-    card.x = this.x;
-    card.y = this.y;
-
-    context.drawImage(card.image, card.x, card.y, card.width, card.height);
+    this.element = document.createElement('img');
+    this.element.classList.add('cell');
+    this.element.src = 'images/backs/cell.png';
   }
 
   get size() {
-    let height = this.height;
-    let width = this.width;
+    return {
+      width: this.width,
+      height: this.height
+    };
+  }
 
-    return { width, height };
+  set size({width, height}) {
+    this.width = width;
+    this.height = height;
+
+    this.element.style.width = `${this.width}px`;
+    this.element.style.height = `${this.height}px`;
+
+    console.log(`setting ${this.type} size: ${width}, ${height}`);
   }
 }

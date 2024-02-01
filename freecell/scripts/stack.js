@@ -1,121 +1,140 @@
-export default class Stack {
+class Stack {
+  type = 'stack';
+
   child = null;
 
   // position/size values are set externally by
   // a method that inspects viewport dimensions
-  x = null;
-  y = null;
+  x = 0;
+  y = 0;
+
   width = null;
   height = null;
 
-  constructor(type) {
-    this.type = type;
+  element = null;
+
+  zIndex = 0;
+
+  // when positioning child cards, this is how far they overlap
+  offset = 25;
+
+  get stackType() {
+    return this.type;
   }
 
   get hasCards() {
     return this.child !== null;
   }
 
+  get cardCount() {
+    let count = 0;
+
+    for (let _card of this.children()) {
+      count += 1;
+    }
+
+    return count;
+  }
+
   get lastCard() {
     let last = this;
-    let count = 0;
 
     while (last?.child) {
       last = last.child;
-
-      // TODO: remove this eventually
-      if (count++ > 50) {
-        throw new Error('Invalid parent/child card link.');
-      }
     }
 
     return last;
+  }
+
+  get nextCardPoint() {
+    return {
+      x: this.x,
+      y: this.y
+    };
   }
 
   toString() {
     return `${this.type} stack`;
   }
 
-  draw(context) {
-    if (!this.hasCards) {
-      return;
+  // generator to easily loop thru all child cards
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
+  *children() {
+    let card = this.child;
+
+    while (card) {
+      yield card;
+      card = card.child;
+    }
+  }
+
+  moveTo(x, y) {
+    this.x = x;
+    this.y = y;
+
+    // if a visible component in the DOM exists, move it
+    if (this.element) {
+      this.element.style.transition = 'translate 0ms linear';
+      this.element.style.translate = `${this.x}px ${this.y}px 0px`;
     }
 
-    let card = this.child;
-    let x = this.x;
-    let y = this.y;
-
-    do {
-      // ensure correct location
-      card.x = x;
-      card.y = y;
-
-      context.drawImage(card.image, card.x, card.y, card.width, card.height);
-
-      // if cards in play piles are still face down, draw them closer together
-      let offset = card.faceUp ? this.cardOffset : this.cardOffset / 3;
-
-      // set up for next card (if necessary)
-      y += offset;
-
-      card = card.child;
-    } while (card);
+    let offset = 0;
+    // move child cards
+    for (let card of this.children()) {
+      card.moveTo(this.x, this.y + offset);
+      offset += this.offset;
+    }
   }
 
   get size() {
     let height = this.height;
     let width = this.width;
-    let card = this.child;
 
-    // Add vertical size if there is more than one card in the stack
-    while (card && card.child) {
-      // if cards in play piles are still face down, draw them closer together
-      let offset = card.faceUp ? this.cardOffset : this.cardOffset / 4;
+    // this is janky -- need to omit the first card, as it will
+    // perfectly overlap the stack
+    let cardCount = 0;
 
-      height += offset;
+    // determine height of stack + all cascading cards
+    for (let card of this.children()) {
+      // if cards in stacks are still face down, draw them closer together
+      let offset = card.faceUp ? this.offset : this.offset / 4;
 
-      card = card.child;
+      if (cardCount > 0) {
+        height += offset;
+      }
+
+      cardCount += 1;
     }
 
     return { width, height };
   }
 
-  touched(point) {
+  set size({width, height}) {
+    this.width = width;
+    this.height = height;
+
+    this.element.style.width = `${this.width}px`;
+    this.element.style.height = `${this.height}px`;
+
+    console.log(`setting ${this.type} size: ${width}, ${height}`);
+  }
+
+
+  contains(point) {
     return point.x > this.x &&
         point.x < this.x + this.width &&
         point.y > this.y &&
         point.y < this.y + this.height;
   }
 
-  // return the card in a stack of cards that was touched
-  // this method is also used for general collision detection
-  // (e.g. if player dropped card[s] over a stack)
-  touchedStack(point) {
-    if (!this.hasCards) {
-      return this.touched(point);
+  // increment all z-indices for cards in this stack
+  // such that they overlap correctly
+  resetZIndex() {
+    let index = 0;
+
+    for (let card of this.children()) {
+      card.zIndex = index;
+      index += 1;
     }
-
-    let card = this;
-
-    do {
-      // cards under other cards only have `cardOffset` of touchable space
-      let height = card.child ? this.cardOffset : card.height;
-
-      if (point.x > card.x && point.x < card.x + card.width &&
-          point.y > card.y && point.y < card.y + height &&
-          // only allow face up cards, or face down cards with no cards on top
-          (card.faceUp || !card.child)) {
-        return card;
-      }
-
-      // look at the next card
-      card = card.child;
-    } while (card);
-
-    return false;
-  }
-
-  reset() {
-    this.child = null;
   }
 }
