@@ -11,76 +11,227 @@
     <h1><span class="henohenomoheji"></span>Ganbaru Games</h1>
 
     <div class="container">
+      <h2>Waste even more time online. No ads. No tracking.</h2>
 
-      <h2>Waste even more time online.</h2>
+      <section>
+        <div class="icon">
+          <a href="/freecell/" title="Play FreeCell!">
+            <img src="freecell/metadata/images/android-chrome-192x192.png" alt="FreeCell icon" />
+          </a>
+        </div>
 
-      <section id="card-games">
         <div class="description">
-          <h3>Klondike</h3>
+          <h3>
+            <a href="/freecell/" title="Play FreeCell!">FreeCell</a>
+          </h3>
 
           <p>
-            Play the solitaire variation Klondike, popularized by its inclusion in Windows. This project aims to be a free,
-            browser-based version of the classic Windows 3.0 game. Development is ongoing, but the most important feature
-            (the falling card waterfall when you win) has been implemented!
+            FreeCell is a patience-type game where all 52 cards are dealt face up on eight "cascades." The goal is to play cards by suit,
+            from low to high rank, on four "foundation" spaces (similar to Klondike solitaire). The twist is that only one card can be moved
+            at a time. To help move cards around the tableau, there are four "free cells," which can hold any card. As an affordance, most
+            electronic versions of the game allow moving stacks of cards, as long as the stack is smaller than <em>empty cells + 1</em>
+            (this is simply to make the game slightly less tedious). Caution is required when moving cards to the cells, as they can
+            only be moved back to cascades in sequential order, with alternating colors. Experiment as much as you want, however, as there's
+            always the "undo" feature to back yourself out of a jam.
           </p>
-
-          <p>
-            <a href="/klondike/" title="Play klondike solitaire &rarr;">
-              <img src="/assets/images/solitaire.gif" alt="Image of klondike solitaire gameplay">
-            </a>
-          </p>
-
-          <h3><a href="/klondike/" title="Play Klondike &rarr;">Play Klondike &rarr;</a></h3>
         </div>
-
-        <div>
-          <h3>FreeCell</h3>
-
-          <p>FreeCell is another solitaire variation; win the game by building up foundations from ace to king.
-            All cards are dealt face up, but only one card can be moved at a time. Multiple cards can be moved by using the
-            "free cells" at the top of the tableau to temporarily place any card. The difficulty is that as the cells are
-            occupied, fewer cards can be moved simultaneously, which can make it difficult to clear the cells.
-            <a href="https://en.wikipedia.org/wiki/FreeCell">Read more on Wikipedia.</a></p>
-
-          <h3><a href="/freecell/" title="Play FreeCell &rarr;">Play FreeCell &rarr;</a></h3>
-        </div>
-
-        <!-- > -->
       </section>
 
       <hr>
 
-      <section id="grid-based-games">
+      <section>
         <div class="description">
-          <h3>Grid-based games</h3>
+          <h3>
+            <a href="/klondike/" title="Play Klondike!">Klondike</a>
+          </h3>
 
-          <p>My current project: implement as many different types of games
-            as possible using <a href="https://github.com/endemic/gridjs">a 2D array to represent
-              game state.</a></p>
+          <p>
+            Play the solitaire variation Klondike, popularized by its inclusion in Windows 3.0. This game is what most people
+            think of when they hear the term "solitaire." Build up cascades of sequential cards in alternating colors, then
+            play them from low to high on four foundations. Rest assured that the most important component of the game,
+            the "card waterfall" effect when you win, has been included.
+          </p>
         </div>
 
-        <div>
-          <h4>Playable</h4>
-
-          <ul>
-            <li><a href="/knights-tour" title="Knight's Tour">Knight's Tour</a></li>
-            <li><a href="/tile-puzzle" title="Tile Puzzle">Tile Puzzle</a></li>
-            <li><a href="/snaaaake" title="Snaaaake">Snaaaake</a></li>
-            <li><a href="/minesweeper" title="Minesweeper">Minesweeper</a></li>
-            <li><a href="/tetris" title="Tetris">Tetris</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4>In progress</h4>
-
-          <ul>
-            <li><a href="https://github.com/endemic/challenge">"Chip's Challenge" clone</a></li>
-            <li><a href="https://github.com/endemic/revenge">"Rodent's Revenge" clone</a></li>
-            <li>2048</li>
-          </ul>
+        <div class="icon">
+          <a href="/klondike/" title="Play Klondike!">
+            <img src="klondike/metadata/images/android-chrome-192x192.png" alt="Klondike icon" />
+          </a>
         </div>
       </section>
+
+      <hr>
+
+      <section>
+        <div class="icon">
+          <a href="/minesweeper/" title="Play Minesweeper!">
+            <img src="minesweeper/metadata/images/android-chrome-192x192.png" alt="Minesweeper icon" />
+          </a>
+        </div>
+
+        <div class="description">
+          <h3>
+            <a href="/minesweeper/" title="Play Minesweeper!">Minesweeper</a>
+          </h3>
+
+          <p>
+            Even though Minesweeper was one of the games that was pre-installed on many older Windows versions, I never
+            learned how to play it until I programmed a copy. Left-clicking a cell in the grid will reveal its contents:
+            either a bomb (you lose!) or a numeric clue. The clue indicates how many bombs are in the eight adjacent cells. Right-click
+            to place a flag indicating the presence of a bomb &mdash; in many cases you can logically deduce (or guess) which cells
+            contain a bomb. If playing on mobile, you can zoom/pan around the game grid, as well as tap &amp; hold to reveal all
+            the un-flagged cells that are adjacent to a previously-revealed cell.
+          </p>
+        </div>
+      </section>
+
+      <hr>
+
+      <section>
+        <div class="description">
+          <h3>
+            <a href="/knights-tour/" title="Play Knight's Tour!">Knight's Tour</a>
+          </h3>
+
+          <p>
+            I learned about this game from reading
+            <a href="https://archive.org/details/arguiot_Iwoz/mode/2up">Steve Wozniak's autobiography</a>.
+            The goal is to visit each square on a
+            chess board, using a knight piece. However, once you visit a square, you can't land on it again. Since the knight
+            moves in an irregular fashion, it's easy to get trapped if you aren't paying attention. When Woz was a kid,
+            he tried to write a program that would brute force a solution. At first, he thought the program got stuck in
+            an infinite loop, but after some debugging realized that it was working as intended &mdash; it would just take
+            10<sup>25</sup> years to finish.
+          </p>
+        </div>
+
+        <div class="icon">
+          <a href="/knights-tour/" title="Play Knight's Tour!">
+            <img src="knights-tour/meta/android-chrome-192x192.png" alt="Knight's Tour icon" />
+          </a>
+        </div>
+      </section>
+
+      <hr>
+
+      <section>
+        <div class="icon">
+          <a href="/nonogram/" title="Play Nonogram Madness">
+            <img src="/nonogram/assets/icons/192.png" alt="Nonogram Madness icon">
+          </a>
+        </div>
+
+        <div class="description">
+          <h3>
+            <a href="/nonogram/" title="Nonogram Madness">Nonogram Madness</a>
+          </h3>
+
+          <!-- <p>
+            A fun &amp; challenging puzzle game; best described as a mix
+            between sudoku and crosswords. Use the provided clues to fill in
+            the correct blocks in the grid, revealing a hidden picture.
+            Complete the included "easy" difficulty puzzles, and if you're
+            up to the challenge, unlock the "medium" and "hard" difficulties
+            for hours of puzzling fun. Includes an interactive tutorial to
+            get beginners up to speed. Think you're a nonogram master? Try
+            solving the randomly generated puzzles for infinite replay value!
+          </p> -->
+
+          <p>
+            The goal of a nonogram puzzle is to "fill" all the correct
+            blocks in a grid. The key to solving each puzzle is the numbers
+            on the top and left of the grid. Each number gives you a clue
+            about how many blocks are filled in each row or column. For
+            example, if the clue for a row was "4 3 1", that means there are
+            four sequentially filled blocks, a gap of one (or more), three
+            filled blocks, another gap, and then finally one filled block on
+            its own. In a 10x10 puzzle grid, this clue solves the whole row:
+            4 filled + 1 blank + 3 filled + 1 blank + 1 filled = 10 total.
+            Solve easy clues first, then you can logically fill in the rest
+            of the blocks in the grid.
+          </p>
+        </div>
+      </section>
+
+      <hr>
+
+      <section>
+        <div class="description">
+          <h3>
+            <a href="/bridges/" title="Play Let's Build Bridges &rarr;">Let's Build Bridges</a>
+          </h3>
+
+          <p>
+            Let's Build Bridges is a collection of logic puzzles, also known
+            as Hashi, Bridges, or Chopsticks. The goal of each puzzle is to
+            connect all the "islands" by drawing a series of "bridges"
+            between them. The rules are:
+          </p>
+
+          <ul>
+            <li>Bridges must start and end at an island.</li>
+            <li>Bridges can only be drawn vertically or horizontally.</li>
+            <li>Bridges cannot cross each other.</li>
+            <li>At most, two bridges can be drawn between islands.</li>
+            <li>The number of bridges connected to each island must match the number on the island.</li>
+            <li>The bridges must connect <strong>all</strong> the islands together.</li>
+          </ul>
+
+          <p>
+            The first few puzzles are easy, but watch out, as the difficulty
+            ramps up quickly! There are 100 puzzles to solve. Have fun
+            building bridges!
+          </p>
+        </div>
+
+        <div class="icon">
+          <a href="/bridges/" title="Play Let's Build Bridges">
+            <img src="/bridges/assets/icons/192.png" alt="Let's Build Bridges icon">
+          </a>
+        </div>
+      </section>
+
+      <hr>
+
+      <section>
+        <div class="icon">
+          <a href="/shikaku/" title="Play Shikaku Madness">
+            <img src="/shikaku/assets/icons/192.png" alt="Shikaku Madness icon">
+          </a>
+        </div>
+
+        <div class="description">
+          <h3>
+            <a href="/shikaku/" title="Play Shikaku Madness">Shikaku Madness</a>
+          </h3>
+
+          <p>
+            Are you a puzzle maniac? Do you eat Japanese logic games like
+            sudoku and nonograms for breakfast? Give Shikaku Madness a try.
+            It's a fun and challenging game, with lots of unique puzzles to
+            solve. Bust your brain as you try to figure out how to
+            completely cover the game grid using squares and rectangles.
+            Sound complicated? Don't worry! The first few levels provide an
+            interactive tutorial to help new players learn the rules.
+          </p>
+
+          <p>
+            Click &amp; drag on the puzzle grid to draw. Each
+            number on the grid is a clue; the number represents the size of
+            the rectangle that overlaps it. For example, a clue of "9" means
+            that you need to draw a 3x3 square on top of that clue. The
+            trick is to draw each square and rectangle so that there's no
+            wasted space on the grid. You can't overlap squares, either.
+            Fortunately, there's no time limit, and you can always try again
+            if you make a mistake.
+          </p>
+        </div>
+      </section>
+
+      <!--
+      <li><a href="/tile-puzzle" title="Tile Puzzle">Tile Puzzle</a></li>
+      <li><a href="/snaaaake" title="Snaaaake">Snaaaake</a></li>
+      <li><a href="/tetris" title="Tetris">Tetris</a></li> -->
 
       <hr>
 
@@ -104,131 +255,15 @@
           <img src="/assets/images/akari_madness.png" alt="Image of Akari Madness gameplay">
         </a>
       </section>
-
-      <hr>
-
-      <section id="bridges">
-        <a href="/bridges/" title="Play Let's Build Bridges &rarr;">
-          <img src="/assets/images/lets-build-bridges.png" alt="Image of Let's Build Bridges gameplay">
-        </a>
-
-        <div class="description">
-          <h3>Let's Build Bridges</h3>
-
-          <p>
-            Let's Build Bridges is a collection of logic puzzles, also known
-            as Hashi, Bridges, or Chopsticks. The goal of each puzzle is to
-            connect all the "islands" by drawing a series of "bridges"
-            between them. The rules are:
-          </p>
-
-          <ul>
-            <li>Bridges must start and end at an island.</li>
-            <li>Bridges can only be drawn in straight lines (not diagonally!)</li>
-            <li>Bridges cannot cross each other.</li>
-            <li>At most, two bridges can be drawn between islands.</li>
-            <li>The number of bridges connected to each island must match the number on the island.</li>
-            <li>The bridges must connect <strong>all</strong> the islands together.</li>
-          </ul>
-
-          <p>
-            The first few puzzles are easy, but watch out, as the difficulty
-            ramps up quickly! There are 100 puzzles to solve. Have fun
-            building bridges!
-          </p>
-
-          <h3><a href="/bridges/" title="Play Let's Build Bridges &rarr;">Play Let's Build Bridges &rarr;</a></h3>
-        </div>
-      </section>
-
-      <hr>
-
-      <section class="shikaku">
-        <div class="description">
-          <h3>Shikaku Madness</h3>
-
-          <p>
-            Are you a puzzle maniac? Do you eat Japanese logic games like
-            sudoku and nonograms for breakfast? Give Shikaku Madness a try.
-            It's a fun and challenging game, with lots of unique puzzles to
-            solve. Bust your brain as you try to figure out how to
-            completely cover the game grid using squares and rectangles.
-            Sound complicated? Don't worry! The first few levels provide an
-            interactive tutorial to help new players learn the rules.
-          </p>
-
-          <p>
-            Click &amp; drag on the puzzle grid to draw. Each
-            number on the grid is a clue; the number represents the size of
-            the rectangle that overlaps it. For example, a clue of "9" means
-            that you need to draw a 3x3 square on top of that clue. The
-            trick is to draw each square and rectangle so that there's no
-            wasted space on the grid. You can't overlap squares, either.
-            Fortunately, there's no time limit, and you can always try again
-            if you make a mistake.
-          </p>
-
-          <h3><a href="/shikaku/" title="Play Shikaku Madness &rarr;">Play Shikaku Madness &rarr;</a></h3>
-        </div>
-
-        <a href="/shikaku/" title="Play Shikaku Madness &rarr;">
-          <img src="/assets/images/shikaku-madness.png" alt="Image of Shikaku Madness gameplay">
-        </a>
-      </section>
-
-      <hr>
-
-      <section class="nonogram">
-        <a href="/nonogram/" title="Play Nonogram Madness &rarr;">
-          <img src="/assets/images/nonogram-madness.png" alt="Image of Nonogram Madness gameplay">
-        </a>
-
-        <div class="description">
-          <h3>Nonogram Madness</h3>
-
-          <p>
-            A fun &amp; challenging puzzle game; best described as a mix
-            between sudoku and crosswords. Use the provided clues to fill in
-            the correct blocks in the grid, revealing a hidden picture.
-            Complete the included "easy" difficulty puzzles, and if you're
-            up to the challenge, unlock the "medium" and "hard" difficulties
-            for hours of puzzling fun. Includes an interactive tutorial to
-            get beginners up to speed. Think you're a nonogram master? Try
-            solving the randomly generated puzzles for infinite replay value!
-          </p>
-
-          <p>
-            The goal of a nonogram puzzle is to "fill" all the correct
-            blocks in a grid. The key to solving each puzzle is the numbers
-            on the top and left of the grid. Each number gives you a clue
-            about how many blocks are filled in each row or column. For
-            example, if the clue for a row was "4 3 1", that means there are
-            four sequentially filled blocks, a gap of one (or more), three
-            filled blocks, another gap, and then finally one filled block on
-            its own. In a 10x10 puzzle grid, this clue solves the whole row:
-            4 filled + 1 blank + 3 filled + 1 blank + 1 filled = 10 total.
-            Solve easy clues first, then you can logically fill in the rest
-            of the blocks in the grid.
-          </p>
-
-          <h3><a href="/nonogram/" title="Play Nonogram Madness &rarr;">Play Nonogram Madness &rarr;</a></h3>
-        </div>
-      </section>
     </div>  <!-- /.container -->
 
     <section id="about">
       <p>
-        Ganbaru Games publishes puzzle games written by
+        Ganbaru Games publishes games written by
         <a href="https://nathandemick.com" title="Nathan Demick">Nathan Demick</a>.
-        Each game is playable in both smartphone and desktop web browsers.
+        Each game is playable mobile and desktop web browsers.
         In fact, you can load a game, then "save to homescreen" on your
         smartphone to have convenient access at any time!
-      </p>
-
-      <p>
-        If you have suggestions for the next game I should make, or
-        problems with the site, please send a message to
-        <a href="mailto:support@ganbarugames.com">support@ganbarugames.com</a>.
       </p>
 
       <p>
@@ -237,11 +272,15 @@
         </a>
       </p>
 
-      <p><a href="/privacy.html" title="Privacy Policy">Privacy Policy</a></p>
+      <ul>
+        <li><a href="https://github.com/endemic/gridjs">Game making resources</a></li>
+        <li><a href="mailto:support@ganbarugames.com">Contact</a></li>
+        <li><a href="/privacy.html" title="Privacy Policy">Privacy Policy</a></li>
+      </ul>
     </section>
 
     <footer>
-      &copy; 2023 Ganbaru Games, LLC.
+      &copy; 2024 Ganbaru Games, LLC.
     </footer>
   </body>
 </html>
